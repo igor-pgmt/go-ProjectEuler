@@ -20,19 +20,6 @@ func main() {
 }
 
 func EvDiv1(m int) int {
-	for i := 1; ; i++ {
-		z := 0
-		for j := 1; j <= m; j++ {
-			z += i % j
-		}
-		if z == 0 {
-			return i
-		}
-	}
-	return m
-}
-
-func EvDiv2(m int) int {
 	for i := m; ; i += m {
 		z := 0
 		for j := 2; j <= m; j++ {
@@ -45,23 +32,36 @@ func EvDiv2(m int) int {
 	return m
 }
 
-// This is the fastest function
-func EvDiv3(k int) *big.Int {
+func EvDiv2(k int) *big.Int {
 	N := big.NewInt(1)
 	check := true
 	limit := math.Sqrt(float64(k))
-	p := getPrimeNumbers(k)
-	for i := 1; p[i] <= k; i++ {
+	prime := getPrimeNumbers(k)
+	for i := 0; i < len(prime); i++ {
 		a := 1
 		if check {
-			if p[i] <= int(limit) {
-				c := math.Log(float64(k)) / math.Log(float64(p[i]))
+			if prime[i] <= int(limit) {
+				c := math.Log(float64(k)) / math.Log(float64(prime[i]))
 				a = int(math.Floor(c))
 			} else {
 				check = false
 			}
 		}
-		N = big.NewInt(0).Mul(N, big.NewInt(int64(iPow(p[i], a))))
+		N = big.NewInt(0).Mul(N, big.NewInt(int64(iPow(prime[i], a))))
 	}
 	return N
+}
+
+// This is the fastest function
+func EvDiv3(k int) int {
+	res := 1
+	primes := getPrimeNumbers(k)
+	for i := 0; i < len(primes); i++ {
+		var mul int
+		for mul = primes[i]; mul <= k; {
+			mul *= primes[i]
+		}
+		res = res * mul / primes[i]
+	}
+	return res
 }

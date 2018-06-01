@@ -5,17 +5,18 @@ import (
 )
 
 func getPrimeNumbers(prop int) (primeNumbers []int) {
-	primeNumbers = []int{1, 2, 3, 5, 7} //first prime numbers
-	endings := [4]int{1, 3, 7, 9}       //endings for the odd numbers
+	primeNumbers = []int{2, 3, 5, 7} // first prime numbers
+	endings := [4]int{1, 3, 7, 9}    // endings for the odd numbers
 	currentNum := 0
-	for i := 1; len(primeNumbers) < prop; i++ {
+Loop:
+	for i := 1; ; i++ {
 		for _, ending := range endings {
 			currentNum = ConcatINT(i, ending)
+			if currentNum >= prop {
+				break Loop
+			}
 			if shortCheckPrimeNumbers(currentNum, primeNumbers) {
 				primeNumbers = append(primeNumbers, currentNum)
-				if len(primeNumbers) >= prop {
-					break
-				}
 			}
 		}
 	}
@@ -24,7 +25,7 @@ func getPrimeNumbers(prop int) (primeNumbers []int) {
 
 func shortCheckPrimeNumbers(prop int, primes []int) bool {
 	sqrt := int(math.Sqrt(float64(prop)))
-	for i := 2; primes[i] <= sqrt; i++ {
+	for i := 1; primes[i] <= sqrt; i++ {
 		if prop%primes[i] == 0 {
 			return false
 		}
