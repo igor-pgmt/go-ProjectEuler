@@ -32,13 +32,9 @@ func breakGoldbach() uint64 {
 			if isOdd(i) {
 				var flag bool
 				for prime := range primes {
-					rq := float64((i - prime) % 2)
-					if rq == 0 {
-						pqr := float64((i - prime) / 2)
-						if isInt(math.Sqrt(pqr)) {
-							flag = true
-							break
-						}
+					if isInt(math.Sqrt(float64((i - prime) / 2))) {
+						flag = true
+						break
 					}
 				}
 				if !flag {
